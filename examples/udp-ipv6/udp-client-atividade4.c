@@ -110,6 +110,7 @@ timeout_handler(void)
     char payload = LED_TOGGLE_REQUEST;
 
     buf[0] = payload;
+    buf[1] = 1;
     if(uip_ds6_get_global(ADDR_PREFERRED) == NULL) {
       PRINTF("Aguardando auto-configuracao de IP\n");
       return;
@@ -117,7 +118,7 @@ timeout_handler(void)
     PRINTF("Enviando LED_TOGGLE_REQUEST para [");
     PRINT6ADDR(&client_conn->ripaddr);
     PRINTF("]:%u\n", UIP_HTONS(client_conn->rport));
-    uip_udp_packet_send(client_conn, buf, 1);
+    uip_udp_packet_send(client_conn, buf, 2);
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -157,7 +158,7 @@ set_connection_address(uip_ipaddr_t *ipaddr)
 {
 #ifndef UDP_CONNECTION_ADDR
 #if RESOLV_CONF_SUPPORTS_MDNS
-#define UDP_CONNECTION_ADDR       contiki-udp-server.local
+#define UDP_CONNECTION_ADDR       2804:14c:87c4:2001:60dc:b854:d00f:a8ad
 #elif UIP_CONF_ROUTER
 #define UDP_CONNECTION_ADDR       fd00:0:0:0:0212:7404:0004:0404
 #else
